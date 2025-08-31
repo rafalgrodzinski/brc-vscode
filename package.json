@@ -1,0 +1,23 @@
+{
+  "name": "brc",
+  "displayName": "brc",
+  "description": "",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": ["Programming Languages"],
+  "contributes": {
+    "languages": [{
+      "id": "brc",
+      "aliases": ["Bits Runner Code", "brc"],
+      "extensions": [".brc"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "brc",
+      "scopeName": "source.brc",
+      "path": "./syntaxes/brc.tmLanguage.json"
+    }]
+  }
+}

@@ -1,0 +1,35 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Bits Runner Code",
+	"scopeName": "source.brc",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.brc",
+				"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not)\\b"
+			}]
+		},
+		"": {
+
+		},
+		"strings": {
+			"name": "string.quoted.double.brc",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.brc",
+					"match": "\\\\."
+				}
+			]
+		}
+	}
+}
