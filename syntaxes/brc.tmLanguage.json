@@ -4,22 +4,43 @@
 	"scopeName": "source.brc",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"name": "keyword.control.brc",
+			"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not)\\b"
 		},
 		{
 			"include": "#strings"
+		},
+		{
+			"name": "meta.brc",
+			"match": "\\b(@module|@export|@import|@extern)\\b"
+		},
+		{
+			"name": "string.quoted.single.brc",
+			"begin": "'",
+			"end": "'"
+		},
+		{
+			"name": "constant.language.brc",
+			"match": "\\b(true|false)\\b"
+		},
+		{
+			"name": "constant.numeric.brc",
+			"match": "\\b[01]+b\\b"
+		},
+		{
+			"name": "constant.numeric.brc",
+			"match": "\\b(0x[0-9a-f]+)\\b"
+		},
+		{
+			"name": "constant.numeric.brc",
+			"match": "\\b(\\+|-)?[0-9]+[0-9_]*[0-9]+\\.[0-9]+[0-9_]*[0-9]+\\b"
+		},
+		{
+			"name": "constant.numeric.brc",
+			"match": "\\b(\\+|-)?[0-9]+\\b"
 		}
 	],
 	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.brc",
-				"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not)\\b"
-			}]
-		},
-		"": {
-
-		},
 		"strings": {
 			"name": "string.quoted.double.brc",
 			"begin": "\"",
