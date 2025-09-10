@@ -1,7 +1,7 @@
 {
   "name": "brc",
-  "displayName": "Bits Runenr Code",
-  "description": "BRC language support for Visual Studio Code",
+  "displayName": "Bits Runner Code",
+  "description": "BRC language support for VSCode",
   "version": "1.0.0",
   "publisher": "rafalgrodzinski",
   "author": {

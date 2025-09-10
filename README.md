@@ -1,4 +1,4 @@
-# BRC language support for Visual Studio Code
+# BRC language support for VSCode
 
 ## Overview
 
