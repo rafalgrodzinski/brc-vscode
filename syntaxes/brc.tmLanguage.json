@@ -4,51 +4,111 @@
 	"scopeName": "source.brc",
 	"patterns": [
 		{
-			"name": "keyword.control.brc",
-			"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not)\\b"
+			"include": "#type"
 		},
 		{
-			"include": "#strings"
+			"include": "#keyword"
 		},
 		{
-			"name": "meta.brc",
-			"match": "\\b(@module|@export|@import|@extern)\\b"
+			"include": "#string"
 		},
 		{
-			"name": "string.quoted.single.brc",
-			"begin": "'",
-			"end": "'"
+			"include": "#numeric"
 		},
 		{
-			"name": "constant.language.brc",
-			"match": "\\b(true|false)\\b"
+			"include": "#function"
 		},
 		{
-			"name": "constant.numeric.brc",
-			"match": "\\b[01]+b\\b"
-		},
-		{
-			"name": "constant.numeric.brc",
-			"match": "\\b(0x[0-9a-f]+)\\b"
-		},
-		{
-			"name": "constant.numeric.brc",
-			"match": "\\b(\\+|-)?[0-9]+[0-9_]*[0-9]+\\.[0-9]+[0-9_]*[0-9]+\\b"
-		},
-		{
-			"name": "constant.numeric.brc",
-			"match": "\\b(\\+|-)?[0-9]+\\b"
+			"include": "#comment"
 		}
 	],
 	"repository": {
-		"strings": {
-			"name": "string.quoted.double.brc",
-			"begin": "\"",
-			"end": "\"",
+		"type": {
+			"name": "storage.type.brc",
 			"patterns": [
 				{
-					"name": "constant.character.escape.brc",
-					"match": "\\\\."
+					"name": "storage.type.brc",
+					"match": "\\b(u8|u32|u64|s8|s32|s64|r32|bool)\\b"
+				},
+				{
+					"name": "storage.type.brc",
+					"match": "\\b(data|blob)(?=<)"
+				}
+			]
+		},
+		"keyword": {
+			"name": "keyword.brc",
+			"patterns": [
+				{
+					"name": "keyword.control.brc",
+					"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not|blob)\\b"
+				},
+				{
+					"name": "keyword.control.meta.brc",
+					"match": "(\\s|^)(@module|@export|@import|@extern)\\b"
+				}
+			]
+		},
+		"string": {
+			"name": "string.brc",
+			"patterns": [
+				{
+					"name": "string.quoted.double.brc",
+					"begin": "\"",
+					"end": "\""
+				},
+				{
+					"name": "string.quoted.single.brc",
+					"begin": "'",
+					"end": "'"
+				}
+			]
+		},
+		"numeric": {
+			"name": "constant.brc",
+			"patterns": [
+				{
+					"name": "constant.numeric.brc",
+					"match": "\\b[01]+b\\b"
+				},
+				{
+					"name": "constant.numeric.brc",
+					"match": "\\b(0x[0-9a-f]+)\\b"
+				},
+				{
+					"name": "constant.numeric.brc",
+					"match": "\\b(\\+|-)?[0-9]+[0-9_]*[0-9]+\\.[0-9]+[0-9_]*[0-9]+\\b"
+				},
+				{
+					"name": "constant.numeric.brc",
+					"match": "\\b(\\+|-)?[0-9]+\\b"
+				},
+				{
+					"name": "constant.language.brc",
+					"match": "\\b(true|false)\\b"
+				}
+			]
+		},
+		"function": {
+			"name": "entity.name.function",
+			"patterns": [
+				{
+					"name": "entity.name.function",
+					"match": "([^\\.\\s]+)(?=\\()"
+				}
+			]
+		},
+		"comment": {
+			"name": "comment.brc",
+			"patterns": [
+				{
+					"name": "comment.block.brc",
+					"begin": "/\\*",
+					"end": "\\*/"
+				},
+				{
+					"name": "comment.line.brc",
+					"match": "//.*$"
 				}
 			]
 		}
