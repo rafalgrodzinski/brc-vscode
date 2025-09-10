@@ -3,6 +3,10 @@
   "displayName": "brc",
   "description": "",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafalgrodzinski/brc-vscode"
+  },
   "engines": {
     "vscode": "^1.103.0"
   },

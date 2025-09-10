@@ -8,3 +8,6 @@
 # Other
 .DS_Store
 .vscode/settings.json
+
+# Build artifacts
+*.vsix
