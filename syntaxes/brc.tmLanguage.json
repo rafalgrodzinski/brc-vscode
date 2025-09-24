@@ -4,6 +4,9 @@
 	"scopeName": "source.brc",
 	"patterns": [
 		{
+			"include": "#comment"
+		},
+		{
 			"include": "#type"
 		},
 		{
@@ -17,9 +20,6 @@
 		},
 		{
 			"include": "#function"
-		},
-		{
-			"include": "#comment"
 		}
 	],
 	"repository": {
