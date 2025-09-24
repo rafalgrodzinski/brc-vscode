@@ -32,7 +32,12 @@
 				{
 					"name": "comment.block.brc",
 					"begin": "/\\*",
-					"end": "\\*/"
+					"end": "\\*/",
+					"patterns": [
+						{
+							"include": "#comment"
+						}
+					]
 				},
 				{
 					"name": "comment.line.brc",
