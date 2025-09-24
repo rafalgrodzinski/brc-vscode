@@ -20,9 +20,26 @@
 		},
 		{
 			"include": "#function"
+		},
+		{
+			"include": "#operator"
 		}
 	],
 	"repository": {
+		"comment": {
+			"name": "comment.brc",
+			"patterns": [
+				{
+					"name": "comment.block.brc",
+					"begin": "/\\*",
+					"end": "\\*/"
+				},
+				{
+					"name": "comment.line.brc",
+					"match": "//.*$"
+				}
+			]
+		},
 		"type": {
 			"name": "storage.type.brc",
 			"patterns": [
@@ -98,19 +115,9 @@
 				}
 			]
 		},
-		"comment": {
-			"name": "comment.brc",
-			"patterns": [
-				{
-					"name": "comment.block.brc",
-					"begin": "/\\*",
-					"end": "\\*/"
-				},
-				{
-					"name": "comment.line.brc",
-					"match": "//.*$"
-				}
-			]
+		"operator": {
+			"name": "keyword.operator.brc",
+			"match": "(<-|->|<=|>=|<|>|!=|=|\\+|-|\\*|\/|%)"
 		}
 	}
 }
