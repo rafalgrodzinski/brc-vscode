@@ -2,7 +2,7 @@
   "name": "brc",
   "displayName": "Bits Runner Code",
   "description": "BRC language support for VSCode",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "publisher": "rafalgrodzinski",
   "author": {
         "name": "Rafal Grodzinski"

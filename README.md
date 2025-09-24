@@ -9,6 +9,12 @@ This extension provides support for the BRC (Bits Runner Code) language, which i
 
 That's it! At least for now. Plain and simple 🤘
 
+## Building
+- make sure you have Visual Studio Code Extensions installed:
+`npm install -g @vscode/vsce`
+- Execute:
+`./build.sh`
+
 ## More Info
 Project's GitHub page:
 [https://github.com/rafalgrodzinski/brc-vscode](https://github.com/rafalgrodzinski/brc-vscode)
