@@ -22,7 +22,19 @@ function getSymbols(document) {
 
     for (let i=0; i<document.lineCount; i++) {
         let line = document.lineAt(i);
-        let match = line.text.match("(\\S+)\\s+fun");
+        let match = null;
+        let symbolKind;
+        
+        // function
+        if (match = line.text.match("(\\S+)\\s+fun")) {
+            symbolKind = vscode.SymbolKind.Function;
+        // blob
+        } else if (match = line.text.match("(\\S+)\\s+blob")) {
+            symbolKind = vscode.SymbolKind.Struct;
+        // variable
+        }/* else if (match = line.text.match("(^\\s*\\S+)\\s+((u|s|f)\\d+|data|blob|ptr)")) {
+            symbolKind = vscode.SymbolKind.Variable;
+        }*/
 
         if (match) {
             let range = new vscode.Range(
@@ -32,7 +44,7 @@ function getSymbols(document) {
             let symbol = new vscode.DocumentSymbol(
                 match[1],
                 null,
-                vscode.SymbolKind.Function,
+                symbolKind,
                 range,
                 range
             );
