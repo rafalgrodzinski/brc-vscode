@@ -27,5 +27,7 @@
       "scopeName": "source.brc",
       "path": "./syntaxes/brc.tmLanguage.json"
     }]
-  }
+  },
+  "activationEvents": [],
+  "main": "./src/extension.js"
 }
