@@ -77,12 +77,24 @@
 				{
 					"name": "string.quoted.double.brc",
 					"begin": "\"",
-					"end": "\""
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.brc",
+							"match": "\\\\."
+						}
+					]
 				},
 				{
 					"name": "string.quoted.single.brc",
 					"begin": "'",
-					"end": "'"
+					"end": "'",
+					"patterns": [
+						{
+							"name": "constant.character.escape.brc",
+							"match": "\\\\."
+						}
+					]
 				}
 			]
 		},
