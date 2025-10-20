@@ -103,19 +103,19 @@
 			"patterns": [
 				{
 					"name": "constant.numeric.brc",
-					"match": "\\b[01]+b\\b"
+					"match": "\\b0b[01](_?[01]+)*\\b"
 				},
 				{
 					"name": "constant.numeric.brc",
-					"match": "\\b(0x[0-9a-f]+)\\b"
+					"match": "\\b0x[0-9a-f](_?[0-9a-f]+)*\\b"
 				},
 				{
 					"name": "constant.numeric.brc",
-					"match": "\\b(\\+|-)?[0-9]+[0-9_]*[0-9]+\\.[0-9]+[0-9_]*[0-9]+\\b"
+					"match": "\\b(\\+|-)?[0-9](_?[0-9]+)*\\.[0-9](_?[0-9]+)*\\b"
 				},
 				{
 					"name": "constant.numeric.brc",
-					"match": "\\b(\\+|-)?[0-9]+\\b"
+					"match": "\\b(\\+|-)?[0-9](_?[0-9]+)*\\b"
 				},
 				{
 					"name": "constant.language.brc",
