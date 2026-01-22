@@ -10,6 +10,9 @@
 			"include": "#commentBlock"
 		},
 		{
+			"include": "#commentInvalid"
+		},
+		{
 			"include": "#type"
 		},
 		{
@@ -52,6 +55,10 @@
 					]
 				}
 			]
+		},
+		"commentInvalid": {
+			"name": "invalid.comment.brc",
+			"match": "\\*/"
 		},
 		"type": {
 			"name": "storage.type.brc",
