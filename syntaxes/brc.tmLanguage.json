@@ -4,7 +4,10 @@
 	"scopeName": "source.brc",
 	"patterns": [
 		{
-			"include": "#comment"
+			"include": "#commentLine"
+		},
+		{
+			"include": "#commentBlock"
 		},
 		{
 			"include": "#type"
@@ -26,7 +29,16 @@
 		}
 	],
 	"repository": {
-		"comment": {
+		"commentLine": {
+			"name": "comment.brc",
+			"patterns": [
+				{
+					"name": "comment.line.brc",
+					"match": "//.*$"
+				}
+			]
+		},
+		"commentBlock": {
 			"name": "comment.brc",
 			"patterns": [
 				{
@@ -35,13 +47,9 @@
 					"end": "\\*/",
 					"patterns": [
 						{
-							"include": "#comment"
+							"include": "#commentBlock"
 						}
 					]
-				},
-				{
-					"name": "comment.line.brc",
-					"match": "//.*$"
 				}
 			]
 		},
