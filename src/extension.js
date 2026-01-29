@@ -1,5 +1,22 @@
 const vscode = require("vscode");
 
+class SourceToken {
+    constructor(startIndex, length, lexme) {
+        this.startIndex = startIndex;
+        this.length = length;
+        this.lexme = lexme;
+    }
+}
+
+// implements vscode.DocumentSymbolProvider
+class BrcDocumentSymbolProvider {
+    provideDocumentSymbols(document, token) {
+        let sourceTokens = getSourceTokens(document)
+        let symbols = getSymbols(document);
+        return symbols;
+    }
+}
+
 function activate(context) {
     context.subscriptions.push(
         vscode.languages.registerDocumentSymbolProvider(
@@ -9,12 +26,54 @@ function activate(context) {
     );
 }
 
-// implements vscode.DocumentSymbolProvider
-class BrcDocumentSymbolProvider {
-    provideDocumentSymbols(document, token) {
-        let symbols = getSymbols(document);
-        return symbols;
+function getSourceTokens(document) {
+    let sourceTokens = [];
+
+    let source = document.getText();
+    let currentIndex = 0;
+
+    while (currentIndex < source.length) {
+        // skip white spaces
+        while (source[currentIndex] == ' ' || source[currentIndex] == '\t')
+            currentIndex++;
+
+        let tokenStart = currentIndex;
+
+        let count = tryMatchingOneOf(source, currentIndex, ["/*", "*/", "//", "\n"]);
+        if (count != 0) {
+            currentIndex += count;
+        } else {
+            while (tryMatchingOneOf(source, currentIndex, [" ", "\t", "/*", "*/", "\n"]) == 0 && currentIndex < source.length)
+                currentIndex++; 
+        }
+
+        let sourceToken = new SourceToken(tokenStart, currentIndex - tokenStart, source.substring(tokenStart, currentIndex));
+        sourceTokens.push(sourceToken);
     }
+
+    return sourceTokens;
+}
+
+function tryMatchingOneOf(source, currentIndex, lexmes) {
+    for (lexme of lexmes) {
+        let matchLength = tryMatching(source, currentIndex, lexme);
+        if (matchLength > 0)
+            return lexme.length;
+    }
+
+    return 0;
+}
+
+function tryMatching(source, currentIndex, lexme) {
+    if (source.length < currentIndex + lexme.length)
+        return 0;
+
+    for (let i=0; i<lexme.length; i++) {
+        if (source[currentIndex + i] != lexme[i])
+            return 0;
+    }
+
+    return lexme.length;
 }
 
 function getSymbols(document) {
