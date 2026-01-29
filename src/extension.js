@@ -44,14 +44,18 @@ function getSourceTokens(document) {
             let count = tryMatchingOneOf(sourceLine, column, ["/*", "*/", "//", "\n"]);
             if (count != 0) {
                 column += count;
+            } else if (sourceLine[column] == "\n") {
+                column++;
             } else {
                 while (tryMatchingOneOf(sourceLine, column, [" ", "\t", "/*", "*/", "\n"]) == 0 && column < sourceLine.length)
-                    column++; 
+                    column++;
             }
 
             let sourceToken = new SourceToken(line, tokenColumn, column - tokenColumn, sourceLine.substring(tokenColumn, column));
             sourceTokens.push(sourceToken);
         }
+
+        sourceTokens.push(new SourceToken(line, column, 1, "\n"));
     }
 
     return sourceTokens;
@@ -85,6 +89,7 @@ function getSymbols(sourceTokens) {
     let commentDepth = 0;
     let isLineComment = false;
     let parentSymbol = null;
+    let parentKind = null;
 
     for (let i=0; i<sourceTokens.length; i++) {
         let symbolFound = false;
@@ -105,6 +110,8 @@ function getSymbols(sourceTokens) {
             isLineComment = true;
         } else if (sourceTokens[i].lexme == "\n") {
             isLineComment = false;
+            if (parentKind == "var")
+                parentKind = null;
         } else if (!isLineComment && commentDepth == 0) {
             // fun
             if ((sourceTokens[i].lexme == "fun" || sourceTokens[i].lexme == "fun:" ) && i > 0) {
@@ -117,12 +124,17 @@ function getSymbols(sourceTokens) {
                 if (i > 1 && sourceTokens[i-2].lexme == "@export") {
                     symbolDetail += ", @export";
                     symbolColumn = sourceTokens[i-2].column;
+                } else if (i > 1 && sourceTokens[i-2].lexme == "@extern") {
+                    symbolDetail += ", @extern";
+                    symbolColumn = sourceTokens[i-2].column;
                 } else {
                     symbolColumn = sourceTokens[i-1].column;
                 }
                 
                 symbolLine = sourceTokens[i].line;
-                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;
+                symbolLength = sourceTokens[i].column + "fun".length - symbolColumn;
+
+                parentKind = "fun";
             // raw
             } else if (sourceTokens[i].lexme == "raw" && i > 0) {
 
@@ -136,7 +148,9 @@ function getSymbols(sourceTokens) {
 
                 symbolLine = sourceTokens[i-1].line;
                 symbolColumn = sourceTokens[i-1].column;
-                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;
+                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
+
+                parentKind = "blob";
             // module
             } else if (sourceTokens[i].lexme == "@module" && i < sourceTokens.length - 1) {
                 symbolFound = true;
@@ -159,6 +173,26 @@ function getSymbols(sourceTokens) {
                 symbolLine = sourceTokens[i].line;
                 symbolColumn = sourceTokens[i].column;
                 symbolLength = sourceTokens[i+1].column + sourceTokens[i+1].length - symbolColumn;
+            // exit parent
+            } else if (sourceTokens[i].lexme == ";") {
+                parentKind = null;
+                parentSymbol = null;
+            // variable
+            } else if (parentKind == null || parentKind == "blob") {
+                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a)");
+                if (match && i > 0) {
+                    symbolFound = true;
+
+                    symbolName = sourceTokens[i-1].lexme;
+                    symbolDetail = match[0];
+                    symbolKind = vscode.SymbolKind.Variable;
+
+                    symbolLine = sourceTokens[i].line;
+                    symbolColumn = sourceTokens[i-1].column;
+                    symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
+
+                    parentKind = "var";
+                }
             }
 
             if (symbolFound) {
@@ -179,87 +213,17 @@ function getSymbols(sourceTokens) {
                 } else {
                     symbols.push(symbol);
                 }
+
+                if (parentKind == "blob") {
+                    parentKind = null;
+                    parentSymbol = symbol;
+                }
             }
         }
     }
 
     return symbols;
 }
-
-/*function getSymbols(document) {
-    let symbols = [];
-    let alreadyFoundFun = false;
-
-    for (let i=0; i<document.lineCount; i++) {
-        let line = document.lineAt(i);
-        let match = null;
-        let name = null;
-        let detail = null;
-        let symbolKind = null;
-        let startIndex = 0;
-        
-        // function
-        if (match = line.text.match("(@export\\s+)?(\\S+)\\s+fun")) {
-            alreadyFoundFun = true;
-            name = match[2];
-            detail = "fun";
-            if (match[1])
-                detail += ", @export";
-            symbolKind = vscode.SymbolKind.Function;
-            startIndex = match[0].indexOf(name);
-        //raw
-        } else if (match = line.text.match("(\\S+)\\s+raw")) {
-            alreadyFoundFun = true;
-            name = match[1];
-            detail = "raw";
-            symbolKind = vscode.SymbolKind.Function;
-            startIndex = match[0].indexOf(name);
-        // blob
-        } else if (match = line.text.match("^\\s*(\\S+)\\s+blob\\s*$")) {
-            name = match[1];
-            detail = "blob";
-            symbolKind = vscode.SymbolKind.Struct;
-            startIndex = match[0].indexOf(name);
-        // module
-        } else if (match = line.text.match("^\\s*@module\\s+(\\S+)")) {
-            name = match[1];
-            detail = "@module";
-            symbolKind = vscode.SymbolKind.File;
-            startIndex = match[0].indexOf(name);
-        // import
-        } else if (match = line.text.match("^\\s*@import\\s+(\\S+)")) {
-            name = match[1];
-            detail = "@import";
-            symbolKind = null;
-            startIndex = match[0].indexOf(name);
-        // variable
-        } else if (!alreadyFoundFun && (match = line.text.match("^\\s*(@export\\s+)?\\s*(\\S+)\\s+((u|s|f)\\d+|data|blob|ptr)"))) {
-            name = match[2];
-            detail = match[3];
-            if (match[1])
-                detail += ", @export";
-            symbolKind = vscode.SymbolKind.Variable;
-            startIndex = match[0].indexOf(name);
-        }
-
-        if (match) {
-            let range = new vscode.Range(
-                new vscode.Position(i, startIndex),
-                new vscode.Position(i, startIndex + name.length)
-            );
-            let symbol = new vscode.DocumentSymbol(
-                name,
-                detail,
-                symbolKind,
-                range,
-                range
-            );
-            symbols.push(symbol);
-        }
-    }
-
-    return symbols;
-}*/
 
 module.exports = {
     activate
