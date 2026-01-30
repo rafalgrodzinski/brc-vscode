@@ -138,8 +138,18 @@ function getSymbols(sourceTokens) {
 
                 multiLineDepth++;
             // raw
-            } else if (sourceTokens[i].lexme == "raw" && i > 0) {
+            } else if (sourceTokens[i].lexme.startsWith("raw") && i > 0) {
+                symbolFound = true;
 
+                symbolName = sourceTokens[i-1].lexme;
+                symbolDetail = "raw";
+                symbolKind = vscode.SymbolKind.Function;
+
+                symbolColumn = sourceTokens[i-1].column;
+                symbolLine = sourceTokens[i-1].line;
+                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;  
+
+                multiLineDepth++;
             // blob
             } else if (sourceTokens[i].lexme == "blob" && i > 0) {
                 symbolFound = true;
