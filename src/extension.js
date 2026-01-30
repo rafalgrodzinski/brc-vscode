@@ -147,7 +147,7 @@ function getSymbols(sourceTokens) {
 
                 symbolColumn = sourceTokens[i-1].column;
                 symbolLine = sourceTokens[i-1].line;
-                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;  
+                symbolLength = sourceTokens[i].column + "raw".length - symbolColumn;  
 
                 multiLineDepth++;
             // blob
@@ -215,7 +215,7 @@ function getSymbols(sourceTokens) {
                 if (multiLineDepth == 0)
                     parentSymbol = null;
             // variable
-            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (multiLineDepth == 1 && parentSymbol && parentSymbol.detail.includes("blob"))) {
+            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (singleLineDepth == 0 && multiLineDepth == 1 && parentSymbol && parentSymbol.detail.includes("blob"))) {
                 let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a$)");
                 if (match && i > 0) {
                     symbolFound = true;
