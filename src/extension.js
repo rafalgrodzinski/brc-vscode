@@ -93,6 +93,8 @@ function getSymbols(sourceTokens) {
     let singleLineDepth = 0;
     let multiLineDepth = 0;
 
+    parentKind = null;
+
     for (let i=0; i<sourceTokens.length; i++) {
         let symbolFound = false;
 
@@ -121,22 +123,25 @@ function getSymbols(sourceTokens) {
 
                 symbolName = sourceTokens[i-1].lexme;
                 symbolDetail = "fun";
-                symbolKind = vscode.SymbolKind.Function;
 
                 if (i > 1 && sourceTokens[i-2].lexme == "@export") {
                     symbolDetail += ", @export";
                     symbolColumn = sourceTokens[i-2].column;
+                    symbolKind = vscode.SymbolKind.Function;
+                    multiLineDepth++;
                 } else if (i > 1 && sourceTokens[i-2].lexme == "@extern") {
                     symbolDetail += ", @extern";
                     symbolColumn = sourceTokens[i-2].column;
+                    symbolKind = vscode.SymbolKind.Variable;
+                    singleLineDepth++;
                 } else {
                     symbolColumn = sourceTokens[i-1].column;
+                    symbolKind = vscode.SymbolKind.Function;
+                    multiLineDepth++;
                 }
                 
                 symbolLine = sourceTokens[i].line;
                 symbolLength = sourceTokens[i].column + "fun".length - symbolColumn;
-
-                multiLineDepth++;
             // raw
             } else if (sourceTokens[i].lexme.startsWith("raw") && i > 0) {
                 symbolFound = true;
@@ -169,6 +174,7 @@ function getSymbols(sourceTokens) {
                 symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
 
                 multiLineDepth++;
+                parentKind = "blob";
             // module
             } else if (sourceTokens[i].lexme == "@module" && i < sourceTokens.length - 1) {
                 symbolFound = true;
@@ -215,7 +221,7 @@ function getSymbols(sourceTokens) {
                 if (multiLineDepth == 0)
                     parentSymbol = null;
             // variable
-            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (singleLineDepth == 0 && multiLineDepth == 1 && parentSymbol && parentSymbol.detail.includes("blob"))) {
+            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (singleLineDepth == 0 && multiLineDepth == 1 && parentSymbol)) {
                 let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a$)");
                 if (match && i > 0) {
                     symbolFound = true;
@@ -251,7 +257,8 @@ function getSymbols(sourceTokens) {
                     symbols.push(symbol);
                 }
 
-                if (symbolDetail.includes("blob")) {
+                if (parentKind == "blob") {
+                    parentKind = null;
                     parentSymbol = symbol;
                 }
             }
