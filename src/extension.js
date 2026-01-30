@@ -89,7 +89,9 @@ function getSymbols(sourceTokens) {
     let commentDepth = 0;
     let isLineComment = false;
     let parentSymbol = null;
-    let parentKind = null;
+
+    let singleLineDepth = 0;
+    let multiLineDepth = 0;
 
     for (let i=0; i<sourceTokens.length; i++) {
         let symbolFound = false;
@@ -110,8 +112,8 @@ function getSymbols(sourceTokens) {
             isLineComment = true;
         } else if (sourceTokens[i].lexme == "\n") {
             isLineComment = false;
-            if (parentKind == "var")
-                parentKind = null;
+            if (singleLineDepth > 0)
+                singleLineDepth--;
         } else if (!isLineComment && commentDepth == 0) {
             // fun
             if ((sourceTokens[i].lexme == "fun" || sourceTokens[i].lexme == "fun:" ) && i > 0) {
@@ -134,7 +136,7 @@ function getSymbols(sourceTokens) {
                 symbolLine = sourceTokens[i].line;
                 symbolLength = sourceTokens[i].column + "fun".length - symbolColumn;
 
-                parentKind = "fun";
+                multiLineDepth++;
             // raw
             } else if (sourceTokens[i].lexme == "raw" && i > 0) {
 
@@ -150,7 +152,7 @@ function getSymbols(sourceTokens) {
                 symbolColumn = sourceTokens[i-1].column;
                 symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
 
-                parentKind = "blob";
+                multiLineDepth++;
             // module
             } else if (sourceTokens[i].lexme == "@module" && i < sourceTokens.length - 1) {
                 symbolFound = true;
@@ -173,13 +175,32 @@ function getSymbols(sourceTokens) {
                 symbolLine = sourceTokens[i].line;
                 symbolColumn = sourceTokens[i].column;
                 symbolLength = sourceTokens[i+1].column + sourceTokens[i+1].length - symbolColumn;
+            // construct depths
+            } else if (sourceTokens[i].lexme == "if" || sourceTokens[i].lexme == "rep") {
+                let currentI = i;
+                isSingleLine = false;
+
+                while (sourceTokens[currentI].lexme != "\n") {
+                    if (sourceTokens[currentI].lexme.includes(":")) {
+                        isSingleLine = true;
+                        break;
+                    }
+                    currentI++;
+                }
+
+                if (isSingleLine)
+                    singleLineDepth++;
+                else
+                    multiLineDepth++;
             // exit parent
             } else if (sourceTokens[i].lexme == ";") {
-                parentKind = null;
-                parentSymbol = null;
+                if (multiLineDepth > 0)
+                    multiLineDepth--;
+                if (multiLineDepth == 0)
+                    parentSymbol = null;
             // variable
-            } else if (parentKind == null || parentKind == "blob") {
-                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a)");
+            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (multiLineDepth == 1 && parentSymbol && parentSymbol.detail == "blob")) {
+                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a$)");
                 if (match && i > 0) {
                     symbolFound = true;
 
@@ -191,7 +212,7 @@ function getSymbols(sourceTokens) {
                     symbolColumn = sourceTokens[i-1].column;
                     symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
 
-                    parentKind = "var";
+                    singleLineDepth++;
                 }
             }
 
@@ -214,8 +235,7 @@ function getSymbols(sourceTokens) {
                     symbols.push(symbol);
                 }
 
-                if (parentKind == "blob") {
-                    parentKind = null;
+                if (symbolDetail == "blob") {
                     parentSymbol = symbol;
                 }
             }
