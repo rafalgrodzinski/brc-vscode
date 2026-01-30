@@ -148,8 +148,14 @@ function getSymbols(sourceTokens) {
                 symbolDetail = "blob";
                 symbolKind = vscode.SymbolKind.Struct;
 
+                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
+                    symbolDetail += ", @export";
+                    symbolColumn = sourceTokens[i-2].column;
+                } else {
+                    symbolColumn = sourceTokens[i-1].column;
+                }
+
                 symbolLine = sourceTokens[i-1].line;
-                symbolColumn = sourceTokens[i-1].column;
                 symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
 
                 multiLineDepth++;
@@ -199,7 +205,7 @@ function getSymbols(sourceTokens) {
                 if (multiLineDepth == 0)
                     parentSymbol = null;
             // variable
-            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (multiLineDepth == 1 && parentSymbol && parentSymbol.detail == "blob")) {
+            } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (multiLineDepth == 1 && parentSymbol && parentSymbol.detail.includes("blob"))) {
                 let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a$)");
                 if (match && i > 0) {
                     symbolFound = true;
@@ -235,7 +241,7 @@ function getSymbols(sourceTokens) {
                     symbols.push(symbol);
                 }
 
-                if (symbolDetail == "blob") {
+                if (symbolDetail.includes("blob")) {
                     parentSymbol = symbol;
                 }
             }
