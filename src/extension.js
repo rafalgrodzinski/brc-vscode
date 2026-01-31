@@ -222,7 +222,7 @@ function getSymbols(sourceTokens) {
                     parentSymbol = null;
             // variable
             } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (singleLineDepth == 0 && multiLineDepth == 1 && parentSymbol)) {
-                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|data|blob|ptr|a$)");
+                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|bool|data|blob|ptr|a$)");
                 if (match && i > 0) {
                     symbolFound = true;
 
