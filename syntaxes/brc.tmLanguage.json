@@ -72,7 +72,7 @@
 				},
 				{
 					"name": "storage.type.brc",
-					"match": "\\b(blob|boxed|data)(?=<)"
+					"match": "\\b(blob|boxed|data|proto)(?=<)"
 				}
 			]
 		},
@@ -81,7 +81,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.brc",
-					"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not|blob)\\b"
+					"match": "\\b(fun|raw|if|else|rep|ret|and|or|xor|not|blob|proto)\\b"
 				},
 				{
 					"name": "keyword.control.meta.brc",
