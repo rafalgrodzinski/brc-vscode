@@ -1,0 +1,36 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: macos-15
+
+  steps:
+    - name: Install Visual Studio Code Extensions
+      run: npm install -g @vscode/vsce
+
+    - name: Checkout Project
+      uses: actions/checkout@v6
+
+    - name: Read Version
+      run: |
+        VERSION=`node -p "require('./package.json').version"`
+        echo "VERSION=${VERSION}">> $GITHUB_ENV
+
+    - name: Build Project
+      run: vsce package --skip-license
+
+    - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        gh release create "${{env.VERSION}}" "brc-${{env.VERSION}}.vsix" \
+        --title "${{env.VERSION}}" \
+        --notes-file "${GITHUB_WORKSPACE}/Notes.md"
