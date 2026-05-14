@@ -29,6 +29,9 @@
 		},
 		{
 			"include": "#operator"
+		},
+		{
+			"include": "#builtin"
 		}
 	],
 	"repository": {
@@ -150,6 +153,19 @@
 		"operator": {
 			"name": "keyword.operator.brc",
 			"match": "(<-|->|<=|>=|<|>|!=|=|\\+|-|\\*|\/|%)"
+		},
+		"builtin": {
+			"name": "support.variable.brc",
+			"patterns": [
+				{
+					"name": "support.variable.brc",
+					"match": "(?<=\\.)(count|size|val|adr|vadr)\\b"
+				},
+				{
+					"name": "support.variable.brc",
+					"match": "\\bit\\b"
+				}
+			]
 		}
 	}
 }
