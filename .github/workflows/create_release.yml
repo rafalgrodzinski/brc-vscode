@@ -34,4 +34,4 @@ jobs:
           gh release delete "${{env.VERSION}}" -y
           gh release create "${{env.VERSION}}" "brc-${{env.VERSION}}.vsix" \
           --title "${{env.VERSION}}" \
-          --generate-notes
+          --notes-file "${{github.workspace}}/Notes.md"
