@@ -1,2 +1,5 @@
+- 0.3.2
+    - Highlight namespace `::`
+    - Changed mached operators
 - 0.3.1
     - Match `ptr_volatile`

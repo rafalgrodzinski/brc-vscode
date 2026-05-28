@@ -142,17 +142,12 @@
 			]
 		},
 		"function": {
-			"name": "entity.name.function",
-			"patterns": [
-				{
-					"name": "entity.name.function",
-					"match": "([^\\.\\s]+)(?=\\()"
-				}
-			]
+			"name": "entity.name.function.brc",
+			"match": "([^\\.\\s:]+)(?=\\()"
 		},
 		"operator": {
 			"name": "keyword.operator.brc",
-			"match": "(<-|->|<=|>=|<|>|!=|=|\\+|-|\\*|\/|%)"
+			"match": "(<-|->|::)"
 		},
 		"builtin": {
 			"name": "support.variable.brc",
