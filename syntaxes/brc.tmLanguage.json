@@ -143,7 +143,7 @@
 		},
 		"function": {
 			"name": "entity.name.function.brc",
-			"match": "([^\\.\\s:]+)(?=\\()"
+			"match": "([^\\.\\s:\"\\']+)(?=\\()"
 		},
 		"operator": {
 			"name": "keyword.operator.brc",
