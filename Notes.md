@@ -1,3 +1,5 @@
+- 0.3.4
+    - Handle `blob: protoName`
 - 0.3.3
     - Tightened function name matching
 - 0.3.2

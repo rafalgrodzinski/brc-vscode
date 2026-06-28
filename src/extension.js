@@ -156,7 +156,7 @@ function getSymbols(sourceTokens) {
 
                 multiLineDepth++;
             // blob
-            } else if (sourceTokens[i].lexme == "blob" && i > 0) {
+            } else if ((sourceTokens[i].lexme == "blob" || sourceTokens[i].lexme == "blob:") && i > 0) {
                 symbolFound = true;
 
                 symbolName = sourceTokens[i-1].lexme;
