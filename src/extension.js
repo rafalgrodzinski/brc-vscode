@@ -203,7 +203,7 @@ function getSymbols(sourceTokens) {
                 isSingleLine = false;
 
                 while (sourceTokens[currentI].lexme != "\n") {
-                    if (sourceTokens[currentI].lexme.includes(":")) {
+                    if (sourceTokens[currentI].lexme.endsWith(":")) {
                         isSingleLine = true;
                         break;
                     }
