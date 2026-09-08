@@ -171,7 +171,25 @@ function getSymbols(sourceTokens) {
                 }
 
                 symbolLine = sourceTokens[i-1].line;
-                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
+                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;
+
+                hasProtos = false;
+                while (sourceTokens[i+1].lexme != "\n") {
+                    i++;
+                    // Get rid of commas and ignore tokesn that are just single commas
+                    token = sourceTokens[i].lexme.replace(",", "");
+                    if (token.length > 0) {
+                        if (!hasProtos) {
+                            symbolDetail += " (";
+                        } else {
+                            symbolDetail += ", ";
+                        }
+                        symbolDetail += token;
+                        hasProtos = true;
+                    }
+                }
+                if (hasProtos)
+                    symbolDetail += ")";
 
                 multiLineDepth++;
                 parentKind = "blob";
