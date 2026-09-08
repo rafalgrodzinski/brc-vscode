@@ -175,6 +175,26 @@ function getSymbols(sourceTokens) {
 
                 multiLineDepth++;
                 parentKind = "blob";
+            // proto
+            } else if ((sourceTokens[i].lexme == "proto" || sourceTokens[i].lexme == "proto:") && i > 0) {
+                symbolFound = true;
+
+                symbolName = sourceTokens[i-1].lexme;
+                symbolDetail = "proto";
+                symbolKind = vscode.SymbolKind.Struct;
+
+                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
+                    symbolDetail += ", @export";
+                    symbolColumn = sourceTokens[i-2].column;
+                } else {
+                    symbolColumn = sourceTokens[i-1].column;
+                }
+
+                symbolLine = sourceTokens[i-1].line;
+                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
+
+                multiLineDepth++;
+                parentKind = "proto";
             // module
             } else if (sourceTokens[i].lexme == "@module" && i < sourceTokens.length - 1) {
                 symbolFound = true;
@@ -257,7 +277,7 @@ function getSymbols(sourceTokens) {
                     symbols.push(symbol);
                 }
 
-                if (parentKind == "blob") {
+                if (parentKind == "blob" || parentKind == "proto") {
                     parentKind = null;
                     parentSymbol = symbol;
                 }

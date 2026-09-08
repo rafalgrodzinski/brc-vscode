@@ -1,4 +1,5 @@
 - 0.4.0
+    - Handle `proto`
     - Fixed incorrect handling of `::`
 - 0.3.4
     - Handle `blob: protoName`
