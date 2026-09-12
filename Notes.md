@@ -1,3 +1,5 @@
+- 0.4.1
+    - Handle `blob_pack`
 - 0.4.0
     - Handle `proto`
     - Fixed incorrect handling of `::`
