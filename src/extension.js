@@ -51,8 +51,10 @@ function getSourceTokens(document) {
                     column++;
             }
 
-            let sourceToken = new SourceToken(line, tokenColumn, column - tokenColumn, sourceLine.substring(tokenColumn, column));
-            sourceTokens.push(sourceToken);
+            if (column > tokenColumn) {
+                let sourceToken = new SourceToken(line, tokenColumn, column - tokenColumn, sourceLine.substring(tokenColumn, column));
+                sourceTokens.push(sourceToken);
+            }
         }
 
         sourceTokens.push(new SourceToken(line, column, 1, "\n"));
@@ -293,7 +295,7 @@ function getSymbols(sourceTokens) {
                     symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
 
                     singleLineDepth++;
-                } else if (parentSymbol.detail == "enum") {
+                } /*else if (parentSymbol?.detail == "enum") {
                     symbolFound = true;
 
                     symbolName = sourceTokens[i].lexme;
@@ -304,7 +306,7 @@ function getSymbols(sourceTokens) {
                     symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
 
                     singleLineDepth++;
-                }
+                }*/
             }
 
             if (symbolFound) {
