@@ -213,6 +213,26 @@ function getSymbols(sourceTokens) {
 
                 multiLineDepth++;
                 parentKind = "proto";
+            // enum
+            } else if ((sourceTokens[i].lexme == "enum") && i > 0) {
+                symbolFound = true;
+
+                symbolName = sourceTokens[i-1].lexme;
+                symbolDetail = "enum";
+                symbolKind = vscode.SymbolKind.Enum;
+
+                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
+                    symbolDetail += ", @export";
+                    symbolColumn = sourceTokens[i-2].column;
+                } else {
+                    symbolColumn = sourceTokens[i-1].column;
+                }
+
+                symbolLine = sourceTokens[i-1].line;
+                symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;                
+
+                multiLineDepth++;
+                parentKind = "enum";
             // module
             } else if (sourceTokens[i].lexme == "@module" && i < sourceTokens.length - 1) {
                 symbolFound = true;
@@ -260,12 +280,23 @@ function getSymbols(sourceTokens) {
                     parentSymbol = null;
             // variable
             } else if ((singleLineDepth == 0 && multiLineDepth == 0) || (singleLineDepth == 0 && multiLineDepth == 1 && parentSymbol)) {
-                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|bool|data|blob_pack|blob|ptr|a$)");
+                let match = sourceTokens[i].lexme.match("^((u|s|f)\\d+|bool|data|blob_pack|blob|enum|ptr|a$)");
                 if (match && i > 0) {
                     symbolFound = true;
 
                     symbolName = sourceTokens[i-1].lexme;
                     symbolDetail = match[0];
+                    symbolKind = vscode.SymbolKind.Variable;
+
+                    symbolLine = sourceTokens[i].line;
+                    symbolColumn = sourceTokens[i-1].column;
+                    symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
+
+                    singleLineDepth++;
+                } else if (parentKind == "enum") {
+                    symbolFound = true;
+
+                    symbolName = sourceTokens[i].lexme;
                     symbolKind = vscode.SymbolKind.Variable;
 
                     symbolLine = sourceTokens[i].line;
@@ -295,7 +326,7 @@ function getSymbols(sourceTokens) {
                     symbols.push(symbol);
                 }
 
-                if (parentKind == "blob" || parentKind == "proto") {
+                if (parentKind == "blob" || parentKind == "proto" || parentKind == "enum") {
                     parentKind = null;
                     parentSymbol = symbol;
                 }
