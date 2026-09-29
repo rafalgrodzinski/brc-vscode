@@ -158,7 +158,7 @@ function getSymbols(sourceTokens) {
 
                 multiLineDepth++;
             // blob
-            } else if ((sourceTokens[i].lexme == "blob" || sourceTokens[i].lexme == "blob:") && i > 0) {
+            } else if ((sourceTokens[i].lexme == "blob" || sourceTokens[i].lexme == "blob:") && i > 0 && multiLineDepth == 0) {
                 symbolFound = true;
 
                 symbolName = sourceTokens[i-1].lexme;
@@ -196,7 +196,7 @@ function getSymbols(sourceTokens) {
                 multiLineDepth++;
                 parentKind = "blob";
             // proto
-            } else if ((sourceTokens[i].lexme == "proto" || sourceTokens[i].lexme == "proto:") && i > 0) {
+            } else if ((sourceTokens[i].lexme == "proto" || sourceTokens[i].lexme == "proto:") && i > 0 && multiLineDepth == 0) {
                 symbolFound = true;
 
                 symbolName = sourceTokens[i-1].lexme;
@@ -216,7 +216,7 @@ function getSymbols(sourceTokens) {
                 multiLineDepth++;
                 parentKind = "proto";
             // enum
-            } else if ((sourceTokens[i].lexme == "enum") && i > 0) {
+            } else if ((sourceTokens[i].lexme == "enum") && i > 0 && multiLineDepth == 0) {
                 symbolFound = true;
 
                 symbolName = sourceTokens[i-1].lexme;
