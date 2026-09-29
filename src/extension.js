@@ -64,7 +64,7 @@ function getSourceTokens(document) {
 }
 
 function tryMatchingOneOf(source, currentIndex, lexmes) {
-    for (lexme of lexmes) {
+    for (let lexme of lexmes) {
         let matchLength = tryMatching(source, currentIndex, lexme);
         if (matchLength > 0)
             return lexme.length;
@@ -95,7 +95,7 @@ function getSymbols(sourceTokens) {
     let singleLineDepth = 0;
     let multiLineDepth = 0;
 
-    parentKind = null;
+    let parentKind = null;
 
     for (let i=0; i<sourceTokens.length; i++) {
         let symbolFound = false;
@@ -175,11 +175,11 @@ function getSymbols(sourceTokens) {
                 symbolLine = sourceTokens[i-1].line;
                 symbolLength = sourceTokens[i].column + sourceTokens[i].length - symbolColumn;
 
-                hasProtos = false;
+                let hasProtos = false;
                 while (sourceTokens[i+1].lexme != "\n") {
                     i++;
                     // Get rid of commas and ignore tokesn that are just single commas
-                    token = sourceTokens[i].lexme.replace(",", "");
+                    let token = sourceTokens[i].lexme.replace(",", "");
                     if (token.length > 0) {
                         if (!hasProtos) {
                             symbolDetail += " (";
@@ -260,7 +260,7 @@ function getSymbols(sourceTokens) {
             // construct depths
             } else if (sourceTokens[i].lexme == "if" || sourceTokens[i].lexme == "rep") {
                 let currentI = i;
-                isSingleLine = false;
+                let isSingleLine = false;
 
                 while (sourceTokens[currentI].lexme != "\n") {
                     if (sourceTokens[currentI].lexme.endsWith(":")) {
