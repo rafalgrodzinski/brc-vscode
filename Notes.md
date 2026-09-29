@@ -1,3 +1,6 @@
+- 0.5.0
+    - Handle `enum`
+    - Highlight `enum` and `match` keywords
 - 0.4.1
     - Handle `blob_pack`
 - 0.4.0
