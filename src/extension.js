@@ -293,7 +293,7 @@ function getSymbols(sourceTokens) {
                     symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
 
                     singleLineDepth++;
-                } else if (parentKind == "enum") {
+                } else if (parentSymbol.detail == "enum") {
                     symbolFound = true;
 
                     symbolName = sourceTokens[i].lexme;
