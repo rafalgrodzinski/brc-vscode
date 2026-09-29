@@ -295,18 +295,19 @@ function getSymbols(sourceTokens) {
                     symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
 
                     singleLineDepth++;
-                } /*else if (parentSymbol?.detail == "enum") {
+                } else if (parentSymbol?.detail == "enum") {
                     symbolFound = true;
 
                     symbolName = sourceTokens[i].lexme;
-                    symbolKind = vscode.SymbolKind.Variable;
+                    symbolDetail = "";
+                    symbolKind = vscode.SymbolKind.EnumMember;
 
                     symbolLine = sourceTokens[i].line;
-                    symbolColumn = sourceTokens[i-1].column;
-                    symbolLength = sourceTokens[i].column + match[0].length - symbolColumn;
+                    symbolColumn = sourceTokens[i].column;
+                    symbolLength = sourceTokens[i].lexme.length;
 
                     singleLineDepth++;
-                }*/
+                }
             }
 
             if (symbolFound) {
