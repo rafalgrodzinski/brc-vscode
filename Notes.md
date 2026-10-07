@@ -1,3 +1,5 @@
+- 0.5.1
+    - Fixed handling `else if`
 - 0.5.0
     - Handle `enum`
     - Highlight `enum` and `match` keywords

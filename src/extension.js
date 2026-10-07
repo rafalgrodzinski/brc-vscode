@@ -258,7 +258,11 @@ function getSymbols(sourceTokens) {
                 symbolColumn = sourceTokens[i].column;
                 symbolLength = sourceTokens[i+1].column + sourceTokens[i+1].length - symbolColumn;
             // construct depths
-            } else if (sourceTokens[i].lexme == "if" || sourceTokens[i].lexme == "rep" || sourceTokens[i].lexme == "match") {
+            } else if (
+                (sourceTokens[i].lexme == "if" && (i == 0 || sourceTokens[i-1].lexme != "else")) ||
+                sourceTokens[i].lexme == "rep" ||
+                sourceTokens[i].lexme == "match"
+            ) {
                 let currentI = i;
                 let isSingleLine = false;
 
