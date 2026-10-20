@@ -1,3 +1,5 @@
+- 0.6.0
+    - Added a problem matcher
 - 0.5.1
     - Fixed handling `else if`
     - Hightlight `tag`

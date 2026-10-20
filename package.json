@@ -2,7 +2,7 @@
   "name": "brc",
   "displayName": "Bits Runner Code",
   "description": "BRC language support for VSCode",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "publisher": "rafalgrodzinski",
   "author": {
         "name": "Rafal Grodzinski"
@@ -26,6 +26,18 @@
       "language": "brc",
       "scopeName": "source.brc",
       "path": "./syntaxes/brc.tmLanguage.json"
+    }],
+    "problemMatchers": [{
+      "name": "brc",
+      "owner": "brc",
+      "fileLocation": "autoDetect",
+      "pattern": {
+          "regexp": "^(🔥|⛔️).+file\\s+([^,]+).+line\\s+(\\d+).+column\\s+(\\d+):\\s*(.+)$",
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "message": 5
+      }
     }]
   },
   "activationEvents": [],
