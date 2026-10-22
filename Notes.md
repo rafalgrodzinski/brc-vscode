@@ -1,5 +1,6 @@
 - 0.6.1
     - Fixed incorrect function match
+    - Match anonymous `$0` variables
 - 0.6.0
     - Added a problem matcher
 - 0.5.1

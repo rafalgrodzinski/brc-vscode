@@ -133,7 +133,7 @@
 				},
 				{
 					"name": "constant.numeric.brc",
-					"match": "\\b(\\+|-)?[0-9](_?[0-9]+)*\\b"
+					"match": "(?<![$\\w])(\\+|-)?[0-9](_?[0-9]+)*\\b"
 				},
 				{
 					"name": "constant.language.brc",
