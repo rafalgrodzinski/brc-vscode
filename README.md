@@ -7,6 +7,8 @@ This extension provides support for the BRC (Bits Runner Code) language, which i
 ## Features
 - Syntax highlighting 🌈
 - Code outline 🌳
+- Problem matcher
+- .brc file icon
 
 ## Building
 - make sure you have Visual Studio Code Extensions installed:
