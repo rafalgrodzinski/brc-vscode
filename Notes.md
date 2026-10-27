@@ -1,5 +1,6 @@
 - 0.7.0
     - App and file icons
+    - Match exchange `<->` operator
 - 0.6.1
     - Fixed incorrect function match
     - Match anonymous `$0` variables

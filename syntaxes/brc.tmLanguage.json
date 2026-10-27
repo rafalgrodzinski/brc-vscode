@@ -147,7 +147,7 @@
 		},
 		"operator": {
 			"name": "keyword.operator.brc",
-			"match": "(<-|->|::)"
+			"match": "(<->|<-|->|::)"
 		},
 		"builtin": {
 			"name": "support.variable.brc",
