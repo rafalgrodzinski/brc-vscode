@@ -1,4 +1,5 @@
 # BRC language support for VSCode
+<img width="96" alt="Logo" src="https://github.com/rafalgrodzinski/brc-vscode/blob/main/img/logo.png" />
 
 ## Overview
 
