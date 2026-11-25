@@ -343,6 +343,36 @@ function getSymbols(sourceTokens) {
                     parentSymbol = symbol;
                 }
             }
+        } else if (isLineComment && sourceTokens[i].lexme == "MARK:") {
+            let name = "";
+            let symbolLine = sourceTokens[i-1].line;
+            let symbolColumn = sourceTokens[i-1].column;
+
+            i++;
+            while (i < sourceTokens.length && sourceTokens[i].lexme != '\n') {
+                name += sourceTokens[i].lexme + " ";
+                i++;
+            }
+
+            let range = new vscode.Range(
+                new vscode.Position(symbolLine, symbolColumn),
+                new vscode.Position(symbolLine, sourceTokens[i].column)
+            );
+            let symbol = new vscode.DocumentSymbol(
+                `💡 ${name.trim()}`,
+                null,
+                vscode.SymbolKind.Number,
+                range,
+                range
+            );
+    
+            if (parentSymbol) {
+                parentSymbol.children.push(symbol);
+            } else {
+                symbols.push(symbol);
+            }
+
+            isLineComment = false;
         }
     }
 
