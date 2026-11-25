@@ -126,8 +126,8 @@ function getSymbols(sourceTokens) {
                 symbolName = sourceTokens[i-1].lexme;
                 symbolDetail = "fun";
 
-                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
-                    symbolDetail += ", @export";
+                if (i > 1 && sourceTokens[i-2].lexme == "@") {
+                    symbolDetail += ", @";
                     symbolColumn = sourceTokens[i-2].column;
                     symbolKind = vscode.SymbolKind.Function;
                     multiLineDepth++;
@@ -152,6 +152,11 @@ function getSymbols(sourceTokens) {
                 symbolDetail = "raw";
                 symbolKind = vscode.SymbolKind.Function;
 
+                if (i > 1 && sourceTokens[i-2].lexme == "@") {
+                    symbolDetail += ", @";
+                    symbolColumn = sourceTokens[i-2].column;
+                }
+
                 symbolColumn = sourceTokens[i-1].column;
                 symbolLine = sourceTokens[i-1].line;
                 symbolLength = sourceTokens[i].column + "raw".length - symbolColumn;  
@@ -165,8 +170,8 @@ function getSymbols(sourceTokens) {
                 symbolDetail = "blob";
                 symbolKind = vscode.SymbolKind.Struct;
 
-                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
-                    symbolDetail += ", @export";
+                if (i > 1 && sourceTokens[i-2].lexme == "@") {
+                    symbolDetail += ", @";
                     symbolColumn = sourceTokens[i-2].column;
                 } else {
                     symbolColumn = sourceTokens[i-1].column;
@@ -203,8 +208,8 @@ function getSymbols(sourceTokens) {
                 symbolDetail = "proto";
                 symbolKind = vscode.SymbolKind.Struct;
 
-                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
-                    symbolDetail += ", @export";
+                if (i > 1 && sourceTokens[i-2].lexme == "@") {
+                    symbolDetail += ", @";
                     symbolColumn = sourceTokens[i-2].column;
                 } else {
                     symbolColumn = sourceTokens[i-1].column;
@@ -223,8 +228,8 @@ function getSymbols(sourceTokens) {
                 symbolDetail = "enum";
                 symbolKind = vscode.SymbolKind.Enum;
 
-                if (i > 1 && sourceTokens[i-2].lexme == "@export") {
-                    symbolDetail += ", @export";
+                if (i > 1 && sourceTokens[i-2].lexme == "@") {
+                    symbolDetail += ", @";
                     symbolColumn = sourceTokens[i-2].column;
                 } else {
                     symbolColumn = sourceTokens[i-1].column;

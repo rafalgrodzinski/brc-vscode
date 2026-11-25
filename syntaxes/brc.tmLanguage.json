@@ -85,7 +85,11 @@
 				},
 				{
 					"name": "keyword.control.meta.brc",
-					"match": "(\\s|^)(@module|@export|@import|@extern)\\b"
+					"match": "(\\s|^)(@module|@import|@extern)\\b"
+				},
+				{
+					"name": "keyword.control.meta.brc",
+					"match": "(\\s|^)@\\s"
 				}
 			]
 		},
