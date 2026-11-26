@@ -349,17 +349,32 @@ function getSymbols(sourceTokens) {
             let symbolColumn = sourceTokens[i-1].column;
 
             i++;
+            let endColumn = symbolColumn;
             while (i < sourceTokens.length && sourceTokens[i].lexme != '\n') {
+                endColumn = sourceTokens[i].column + sourceTokens[i].lexme.length;
                 name += sourceTokens[i].lexme + " ";
                 i++;
             }
+            name = `💡 ${name.trim()}`;
 
             let range = new vscode.Range(
                 new vscode.Position(symbolLine, symbolColumn),
-                new vscode.Position(symbolLine, sourceTokens[i].column)
+                new vscode.Position(symbolLine, endColumn)
             );
             let symbol = new vscode.DocumentSymbol(
-                `💡 ${name.trim()}`,
+                name,
+                null,
+                vscode.SymbolKind.Number,
+                range,
+                range
+            );
+
+            let emptyName = "";
+            for (let i=0; i<name.length/2; i++)
+                emptyName += "━";
+
+            let emptySymbol = new vscode.DocumentSymbol(
+                emptyName,
                 null,
                 vscode.SymbolKind.Number,
                 range,
@@ -367,8 +382,10 @@ function getSymbols(sourceTokens) {
             );
     
             if (parentSymbol) {
+                parentSymbol.children.push(emptySymbol);
                 parentSymbol.children.push(symbol);
             } else {
+                symbols.push(emptySymbol);
                 symbols.push(symbol);
             }
 

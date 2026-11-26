@@ -1,3 +1,5 @@
+- 0.8.1:
+    - `MARK:` separator
 - 0.8.0
     - Match `@` for exported and public attributes
     - Highlight `MARK:` in outline
