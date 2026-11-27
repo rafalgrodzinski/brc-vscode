@@ -1,3 +1,5 @@
+- 0.8.2:
+    - Modified `MARK:` separator
 - 0.8.1:
     - `MARK:` separator
 - 0.8.0

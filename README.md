@@ -8,6 +8,7 @@ This extension provides support for the BRC (Bits Runner Code) language, which i
 ## Features
 - Syntax highlighting 🌈
 - Code outline 🌳
+- Outline spearators with `// MARK:` comments
 - Problem matcher 🔥
 - .brc file icon 📄
 

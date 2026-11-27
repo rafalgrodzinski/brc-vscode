@@ -355,26 +355,14 @@ function getSymbols(sourceTokens) {
                 name += sourceTokens[i].lexme + " ";
                 i++;
             }
-            name = `💡 ${name.trim()}`;
 
             let range = new vscode.Range(
                 new vscode.Position(symbolLine, symbolColumn),
                 new vscode.Position(symbolLine, endColumn)
             );
+
             let symbol = new vscode.DocumentSymbol(
-                name,
-                null,
-                vscode.SymbolKind.Number,
-                range,
-                range
-            );
-
-            let emptyName = "";
-            for (let i=0; i<name.length/2; i++)
-                emptyName += "━";
-
-            let emptySymbol = new vscode.DocumentSymbol(
-                emptyName,
+                `════ ${name.trim()} ════`,
                 null,
                 vscode.SymbolKind.Number,
                 range,
@@ -382,10 +370,8 @@ function getSymbols(sourceTokens) {
             );
     
             if (parentSymbol) {
-                parentSymbol.children.push(emptySymbol);
                 parentSymbol.children.push(symbol);
             } else {
-                symbols.push(emptySymbol);
                 symbols.push(symbol);
             }
 
